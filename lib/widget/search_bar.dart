@@ -132,7 +132,8 @@ class SearchBar {
     Color buttonColor = inBar ? null : (colorBackButton ? _defaultAppBar.backgroundColor ?? theme.primaryColor ?? Colors.grey.shade400 : Colors.grey.shade400);
     Color buttonDisabledColor = inBar ? new Color.fromRGBO(255, 255, 255, 0.25) : Colors.grey.shade300;
 
-    Color textColor = inBar ? Colors.white70 : Colors.black54;
+    //Color textColor = inBar ? Colors.white70 : Colors.black54;
+    Color textColor = buttonColor;
 
     return new AppBar(
       leading: new BackButton(

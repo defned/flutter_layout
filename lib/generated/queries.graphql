@@ -1,0 +1,15 @@
+query getFlyertemplates {
+  flyertemplates {
+    edges {
+      node {
+        title
+        body
+        business {
+          name
+          long
+          long
+        }
+      }
+    }
+  }
+}
