@@ -9,7 +9,9 @@ class FlyerDetailsPage extends StatelessWidget {
   // Movie object to handle.
   GetFlyertemplates_FlyerTemplateNodeEdge flyer;
   // Constructor for the class.
-  FlyerDetailsPage(this.flyer);
+  FlyerDetailsPage(this.flyer) {
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class FlyerDetailsPage extends StatelessWidget {
         ),
         body: new ListView(children: <Widget>[
           new Container(
+              height:350.0,
               color: RandomColor.next(),
               child: new Image(
                   image: new NetworkImageWithRetry(

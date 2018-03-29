@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:eflyr/generated/queries.graphql.dart';
 import 'package:eflyr/graphql/fetch.dart';
@@ -31,6 +32,18 @@ class _FlyerOverviewState extends State<FlyerOverviewPage> {
         onSubmitted: onSubmitted);
   }
 
+  @override
+  initState() {
+    super.initState();
+    loadFlyers();
+  }
+
+  List<Widget> flyers = <Widget>[];
+
+  Future loadFlyers() async {
+    buildFlyerCardItem(await fetchFlyers());
+  }
+
   AppBar buildAppBar(BuildContext context) {
     return new AppBar(
         title: new Text("eFLYRs"),
@@ -48,43 +61,28 @@ class _FlyerOverviewState extends State<FlyerOverviewPage> {
 
   /// Build UI
   Widget buildGrid() {
-    return new FutureBuilder(
-        future: fetchFlyers(),
-        builder: (BuildContext context,
-            AsyncSnapshot<GraphqlResponse<GetFlyertemplatesResult>> snapshot) {
-          if (!snapshot.hasData)
-            // Shows progress indicator until the data is load.
-            return new MaterialApp(
-                home: new Scaffold(
-              body: new Center(
-                child: new CircularProgressIndicator(),
-              ),
-            ));
-          // Shows the real data with the data retrieved.
-          GraphqlResponse<GetFlyertemplatesResult> flyers = snapshot.data;
-          return new CustomScrollView(
+    return new CustomScrollView(
             primary: false,
             slivers: <Widget>[
               new SliverPadding(
                 padding: const EdgeInsets.all(10.0),
                 sliver: new SliverGrid.count(
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
+                  crossAxisSpacing: 5.0,
+                  mainAxisSpacing: 5.0,
                   crossAxisCount: 2,
-                  children: createMovieCardItem(flyers, context),
+                  children: flyers,
                 ),
               ),
             ],
           );
-        });
   }
 
-  List<Widget> createMovieCardItem(
-      GraphqlResponse<GetFlyertemplatesResult> flyers, BuildContext context) {
+  void buildFlyerCardItem(
+      GraphqlResponse<GetFlyertemplatesResult> _flyers) {
     // Children list for the list.
     List<Widget> listElementWidgetList = new List<Widget>();
-    if (flyers != null) {
-      for (var edge in flyers.data.flyertemplates.edges) {
+    if (_flyers != null) {
+      for (var edge in _flyers.data.flyertemplates.edges) {
         listElementWidgetList.add(new Card(
             color: RandomColor.next(),
             child: new Stack(children: <Widget>[
@@ -93,18 +91,11 @@ class _FlyerOverviewState extends State<FlyerOverviewPage> {
                   child: new GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(new FadeRoute(
-                            builder: (BuildContext context) =>
-                                new FlyerDetailsPage(edge),
-                            settings: new RouteSettings(
-                                name: '/notes', isInitialRoute: false),
-                          ));
-
-                      ///TODO: Add detail page behaviour. Will be added in the next blog post.
-//                      Navigator.push(
-//                          context,
-//                          new MaterialPageRoute(
-//                              builder: (BuildContext context) =>
-//                                  new FlyerDetails(edge)));
+                        builder: (BuildContext context) =>
+                        new FlyerDetailsPage(edge),
+                        settings: new RouteSettings(
+                            name: 'flyerdetails', isInitialRoute: false),
+                      ));
                     },
                     child: new GridTile(
                         header: new GridTileBar(
@@ -119,7 +110,7 @@ class _FlyerOverviewState extends State<FlyerOverviewPage> {
             ])));
       }
     }
-    return listElementWidgetList;
+    setState(() { flyers = listElementWidgetList; });
   }
 
   @override
@@ -155,7 +146,7 @@ class _FlyerOverviewState extends State<FlyerOverviewPage> {
     children
       ..addAll(_buildHeader(context))
       ..addAll(_buildSettingAndHelp(context))
-      ..addAll([new Divider(color: Colors.black)])
+      ..addAll([new Divider()])
       ..addAll(_buildMisc(context));
 
     return children;

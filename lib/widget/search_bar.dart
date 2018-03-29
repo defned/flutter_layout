@@ -147,13 +147,13 @@ class SearchBar {
             keyboardType: TextInputType.text,
             style: new TextStyle(
                 color: textColor,
-                fontSize: 16.0
+                fontSize: 18.0
             ),
             decoration: new InputDecoration(
                 hintText: hintText,
                 hintStyle: new TextStyle(
                     color: textColor,
-                    fontSize: 16.0
+                    fontSize: 18.0
                 ),
                 border: null
             ),

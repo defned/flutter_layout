@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 
 import 'package:eflyr/page/FlyerOverviewPage.dart';
+import 'package:eflyr/page/FlyerDetailsPage.dart';
 import 'package:eflyr/page/AboutPage.dart';
 import 'package:eflyr/page/SplashPage.dart';
 
@@ -18,7 +19,7 @@ void main() {
   }));
 
   // Define our home page.
-  router.define('home', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+  router.define('flyeroverview', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new FlyerOverviewPage();
   }));
 
